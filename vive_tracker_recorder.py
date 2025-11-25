@@ -339,10 +339,12 @@ class LivePlotter:
         self.fig_3d = plt.figure()
         self.ax_3d = self.fig_3d.add_subplot(111, projection='3d')
         self.ax_3d.view_init(elev=25, azim=-135, vertical_axis='z')
-        self.ax_3d.set_xlabel('X (Left/Right)')
+        self.ax_3d.set_xlabel('X (+Left/-Right)')
         self.ax_3d.set_ylabel('Z (Front/Back)')
         self.ax_3d.set_zlabel('Y (Up/Down)')
         self.ax_3d.set_title('3D Tracker Position')
+        # Invert X axis so larger values appear on the left
+        self.ax_3d.invert_xaxis()
         
         self.pos_3d = {axis: deque(maxlen=50) for axis in 'xyz'}
         self.line_3d, = self.ax_3d.plot([], [], [], 'r-')
@@ -414,8 +416,9 @@ class LivePlotter:
         corners_z = [-half, -half, half, half, -half]
         ax.plot(corners_x, corners_z, [0]*5, 'k-', alpha=alpha*2, linewidth=1)
         
-        # Axis labels: X=left/right, Y=up/down, Z=front/back
-        ax.text(half + 0.1, 0, 0, '+X (Right)', fontsize=8, color='red', alpha=0.7)
+        # Axis labels: X=left/right (inverted: +X=Left), Y=up/down, Z=front/back
+        ax.text(half + 0.1, 0, 0, '+X (Left)', fontsize=8, color='red', alpha=0.7)
+        ax.text(-half - 0.1, 0, 0, '-X (Right)', fontsize=8, color='red', alpha=0.5)
         ax.text(0, half + 0.1, 0, '+Z (Front)', fontsize=8, color='blue', alpha=0.7)
         ax.text(0, 0, half + 0.1, '+Y (Up)', fontsize=8, color='green', alpha=0.7)
 
@@ -425,9 +428,9 @@ class LivePlotter:
         self.fig_6dof = plt.figure(figsize=cfg.figsize)
         
         # Main 3D view (left half)
-        # Coordinate system: X=left/right, Y=up/down, Z=front/back
+        # Coordinate system: X=left/right (inverted: +X=Left), Y=up/down, Z=front/back
         self.ax_6dof_3d = self.fig_6dof.add_subplot(1, 2, 1, projection='3d')
-        self.ax_6dof_3d.set_xlabel('X (m) [Left/Right]', fontsize=10)
+        self.ax_6dof_3d.set_xlabel('X (m) [+Left/-Right]', fontsize=10)
         self.ax_6dof_3d.set_ylabel('Z (m) [Front/Back]', fontsize=10)
         self.ax_6dof_3d.set_zlabel('Y (m) [Up/Down]', fontsize=10)
         self.ax_6dof_3d.set_title('6DoF Tracker Pose\n(Position + Orientation)', fontsize=12)
@@ -457,11 +460,14 @@ class LivePlotter:
         legend_elements = [
             Line2D([0], [0], marker='o', color='w', markerfacecolor='purple', markersize=8, label='Trajectory'),
             Patch(facecolor='steelblue', edgecolor='darkblue', alpha=0.7, label='Tracker'),
-            Line2D([0], [0], color='red', linewidth=2, label='X (Left/Right)'),
+            Line2D([0], [0], color='red', linewidth=2, label='X (+Left/-Right)'),
             Line2D([0], [0], color='green', linewidth=2, label='Y (Up/Down)'),
             Line2D([0], [0], color='blue', linewidth=2, label='Z (Front/Back)'),
         ]
         self.ax_6dof_3d.legend(handles=legend_elements, loc='upper left', fontsize=8)
+        
+        # Invert X axis so larger values appear on the left
+        self.ax_6dof_3d.invert_xaxis()
         
         # Position time series (top right)
         self.ax_pos_time = self.fig_6dof.add_subplot(2, 2, 2)
@@ -470,7 +476,7 @@ class LivePlotter:
         self.ax_pos_time.set_ylabel('Position (m)')
         self.ax_pos_time.grid(True, alpha=0.3)
         self.pos_lines = {
-            'x': self.ax_pos_time.plot([], [], 'r-', label='X (L/R)', linewidth=1.5)[0],
+            'x': self.ax_pos_time.plot([], [], 'r-', label='X (+L/-R)', linewidth=1.5)[0],
             'y': self.ax_pos_time.plot([], [], 'g-', label='Y (U/D)', linewidth=1.5)[0],
             'z': self.ax_pos_time.plot([], [], 'b-', label='Z (F/B)', linewidth=1.5)[0],
         }
