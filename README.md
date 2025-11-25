@@ -121,13 +121,30 @@ UltimateTracker_python/
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
+## 🙏 Acknowledgements
+
+This project is a fork of the original [UltimateTracker_python](https://github.com/jkulozik/UltimateTracker_python) by Julian Kulozik. We thank the original author for creating the foundation for direct VIVE tracker access in Python.
+
 ## 📬 Contact
 
-For questions or issues, please contact: **kulozik[at]isir.upmc.fr**
+For questions or issues regarding this fork, please open an issue on GitHub.
+
+For the original project, contact: **kulozik[at]isir.upmc.fr**
 
 ## 📚 Citation
 
 If you use this code in your research, please cite:
+
+```bibtex
+@software{nijkah2025vivetracker,
+  author = {nijkah},
+  title = {UltimateTracker_python: VIVE Tracker Data Collection and 6DoF Visualization},
+  year = {2025},
+  url = {https://github.com/nijkah/UltimateTracker_python}
+}
+```
+
+This project is based on the original work by Julian Kulozik:
 
 ```bibtex
 @software{kulozik2024vivetracker,
