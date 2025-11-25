@@ -1,0 +1,13 @@
+# VIVE Tracker Data Collection Dependencies
+
+# OpenVR Python bindings for SteamVR/VIVE tracker access
+openvr>=1.26.701
+
+# Scientific computing and array operations
+numpy>=1.21.0
+
+# Visualization and plotting
+matplotlib>=3.5.0
+
+# High-precision timing for Windows
+win-precise-time>=1.4.0
